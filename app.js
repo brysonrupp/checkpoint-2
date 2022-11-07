@@ -34,10 +34,11 @@ let automaticUpgrades = [
 let gold = 0
 let power = 1
 let totalGold = 0
+let autoGold = 0
 // let autoUpgrades = 1
 
 function update() {
-    document.getElementById('mine').innerText = `Gold: ${gold} Mining Power: ${power} Overall Mined: ${totalGold}`
+    document.getElementById('mine').innerText = `Gold: ${gold} | Mining Power: ${power} | Auto-Mining: ${autoGold} | Overall Mined: ${totalGold}`
 }
 
 function mine() {
@@ -66,12 +67,13 @@ function buyTimer(name) {
     let auto = automaticUpgrades.find(a => a.name == name)
     if (gold >= auto.price) {
         let goldInterval = setInterval(() => {
-            gold += auto.multiplier
-            totalGold += auto.multiplier
+            gold += auto.multiplier * auto.quantity
+            totalGold += auto.multiplier * auto.quantity
             update()
         }, 3000)
         gold -= auto.price
         auto.quantity += 1
+        autoGold += auto.quantity * auto.multiplier
         auto.price += 60
         setTimeout(() => {
             clearInterval(goldInterval)
